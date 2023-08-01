@@ -93,15 +93,17 @@ public class MainActivity extends AppCompatActivity {
                 lblcantidadpalabras.setText("No. de palabras en la cadena: " + palabras.length);
                 lblcantidadcaracteres.setText("No. de caracteres en la cadena: " + valor.replace(" ", "").length());
 
-                contadorLetras();
-                lblCantidadVocales.setText("No. de vocales en la cadena: "+n_voc+" ("+voc+")");
-                lblCantidadConsonantes.setText("No. de consonantes en la cadena:  "+n_cons+" ("+cons+")");
-                lblCantidadSignos.setText("No. de signos en la cadena: "+n_sign+" ("+sign+")");
+                //contador caracteres
+                lblCantidadVocales.setText("No. de vocales en la cadena: "+contadorCaracteres(valor.toLowerCase(), "VOCALES").length()+" ("+contadorCaracteres(valor.toLowerCase(), "VOCALES")+")");
+                lblCantidadConsonantes.setText("No. de consonantes en la cadena:  "+contadorCaracteres(valor.toLowerCase(), "CONSONANTES").length()+" ("+contadorCaracteres(valor.toLowerCase(), "CONSONANTES")+")");
+                lblCantidadSignos.setText("No. de signos en la cadena: "+contadorCaracteres(valor.toLowerCase(), "SIGNOS").length()+" ("+contadorCaracteres(valor.toLowerCase(), "SIGNOS")+")");
 
                 //cadena invertida
-
-                cadenaInvertida();
-                lblCadenaInvertida.setText("Cadena invertida: "+invertida);
+                String cadena = valor;
+                String cadenaInvertida = cadenaInvertidaGenerico(cadena);
+                lblCadenaInvertida.setText("Cadena invertida: " +cadenaInvertida);
+                /*cadenaInvertida();
+                lblCadenaInvertida.setText("Cadena invertida: "+invertida);*/
 
                 //palabra invertida
                 String palabraInvertida ="";
@@ -116,7 +118,44 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public void contadorLetras(){
+    public String contadorCaracteres(String cadenaEntrada, String opcion){
+        String cadenaCaracteres ="";
+
+        char[] signos = {',' , ';' , '.' , ':' , '¿' , '?' , '¡' , '!' , '-' , '_' , '/' , '&', '@' , '$'};
+        char[] vocales = {'a','e','i','o','u'};
+        char[] consonantes = {'b','c','d','f','g','h','j','k','l','m','n','ñ','p','q','r','s','t','v','w','x','y','z'};
+
+        if (opcion.equals("SIGNOS")){
+            for (int i=0; i<cadenaEntrada.length(); i++){
+                for (int a=0; a<signos.length; a++){
+                    if (cadenaEntrada.charAt(i) == signos[a]){
+                        cadenaCaracteres+= cadenaEntrada.charAt(i);
+                    }
+                }
+            }
+        } else if (opcion.equals("VOCALES")) {
+            for (int i=0; i<cadenaEntrada.length(); i++){
+                for (int a=0; a<vocales.length; a++){
+                    if (cadenaEntrada.charAt(i) == vocales[a]){
+                        cadenaCaracteres+= cadenaEntrada.charAt(i);
+                    }
+                }
+            }
+        } else if (opcion.equals("CONSONANTES")) {
+            for (int i=0; i<cadenaEntrada.length(); i++){
+                for (int a=0; a<consonantes.length; a++){
+                    if (cadenaEntrada.charAt(i) == consonantes[a]){
+                        cadenaCaracteres+= cadenaEntrada.charAt(i);
+                    }
+                }
+            }
+        }else{
+
+        }
+        return cadenaCaracteres;
+    }
+
+    /*public void contadorLetras(){
         char[] signos = {',' , ';' , '.' , ':' , '¿' , '?' , '¡' , '!' , '-' , '_' , '/' , '&', '@' , '$'};
         char[] vocales = {'a','e','i','o','u'};
         char[] consonantes = {'b','c','d','f','g','h','j','k','l','m','n','ñ','p','q','r','s','t','v','w','x','y','z'};
@@ -144,14 +183,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
-    }
+    }*/
 
-    public void cadenaInvertida(){
+    /*public void cadenaInvertida(){
         String cadena = txtinfostring.getText().toString().trim();
 
         StringBuilder stringBuilder = new StringBuilder(cadena);
         invertida = stringBuilder.reverse().toString();
-    }
+    }*/
 
     public String cadenaInvertidaGenerico(String cadenaOriginal){
 
@@ -171,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
             lblCantidadConsonantes.setText("");
             lblCantidadSignos.setText("");
             lblCadenaInvertida.setText("");
+            lblPalabrasInvertidas.setText("");
 
         }
     };
