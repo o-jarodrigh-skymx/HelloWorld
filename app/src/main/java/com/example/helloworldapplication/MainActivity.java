@@ -1,5 +1,7 @@
 package com.example.helloworldapplication;
 
+import static java.util.Collections.reverse;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,7 +22,22 @@ public class MainActivity extends AppCompatActivity {
     TextView lblcadenaingresada;
     TextView lblcantidadpalabras;
     TextView lblcantidadcaracteres;
-    TextView lblcantidadnumeros;
+    TextView lblCantidadVocales;
+    TextView lblCantidadConsonantes;
+    TextView lblCantidadSignos;
+    TextView lblPalabrasInvertidas;
+    TextView lblCadenaInvertida;
+
+    String voc="";
+    String cons="";
+    String sign="";
+
+    int n_voc=0;
+    int n_cons=0;
+    int n_sign=0;
+
+    String invertida;
+
 
 
     Button btnSiguiente;
@@ -40,7 +57,13 @@ public class MainActivity extends AppCompatActivity {
             lblcadenaingresada = findViewById(R.id.lblcadenaingresada);
             lblcantidadpalabras = findViewById(R.id.lblcantidadpalabras);
             lblcantidadcaracteres = findViewById(R.id.lblcantidadcaracteres);
-            lblcantidadnumeros = findViewById(R.id.lblcantidadnumeros);
+            lblCantidadVocales = findViewById(R.id.lblCantidadVocales);
+            lblCantidadConsonantes = findViewById(R.id.lblCantidadConsonantes);
+            lblCantidadSignos = findViewById(R.id.lblCantidadSignos);
+            lblPalabrasInvertidas = findViewById(R.id.lblPalabrasInvertidas);
+            lblCadenaInvertida = findViewById(R.id.lblCadenaInvertida);
+
+
 
 
             btnSiguiente = findViewById(R.id.btnSiguiente);
@@ -69,28 +92,72 @@ public class MainActivity extends AppCompatActivity {
                 String[] palabras = valor.split(" ");
                 lblcantidadpalabras.setText("No. de palabras en la cadena: " + palabras.length);
                 lblcantidadcaracteres.setText("No. de caracteres en la cadena: " + valor.replace(" ", "").length());
-                int contadorNumeros = 0;
-                int i;
-                for (i = 0; i < palabras.length; i++) {
-                    if (Character.isDigit(Integer.parseInt(palabras[i]))) {
-                        ++contadorNumeros;
-                    }
 
+                contadorLetras();
+                lblCantidadVocales.setText("No. de vocales en la cadena: "+n_voc+" ("+voc+")");
+                lblCantidadConsonantes.setText("No. de consonantes en la cadena:  "+n_cons+" ("+cons+")");
+                lblCantidadSignos.setText("No. de signos en la cadena: "+n_sign+" ("+sign+")");
+
+                //cadena invertida
+
+                cadenaInvertida();
+                lblCadenaInvertida.setText("Cadena invertida: "+invertida);
+
+                //palabra invertida
+                String palabraInvertida ="";
+                for (int x = 0; x< palabras.length; x++){
+                  String palabra = palabras[x];
+                  String invertida = cadenaInvertidaGenerico(palabra);
+                  palabraInvertida+= invertida +" ";
                 }
-                Resultado resultado = new Resultado();
-                resultado.contadorNumeros = contadorNumeros;
-
-                lblcantidadnumeros.setText("Cantidad de numeros en la cadena: " + resultado.contadorNumeros );
-
-
+                lblPalabrasInvertidas.setText("Palabras invertidas: "+palabraInvertida);
 
             }
-
         }
     };
 
-    class Resultado {
-        public int contadorNumeros;
+    public void contadorLetras(){
+        char[] signos = {',' , ';' , '.' , ':' , '¿' , '?' , '¡' , '!' , '-' , '_' , '/' , '&', '@' , '$'};
+        char[] vocales = {'a','e','i','o','u'};
+        char[] consonantes = {'b','c','d','f','g','h','j','k','l','m','n','ñ','p','q','r','s','t','v','w','x','y','z'};
+
+        String entrada = txtinfostring.getText().toString().trim().toLowerCase();
+
+        for (int i=0; i<entrada.length(); i++){
+            for (int a=0; a<vocales.length; a++){
+                if (entrada.charAt(i) == vocales[a]){
+                    n_voc++;
+                    voc+=entrada.charAt(i);
+                }
+            }
+            for (int a=0; a<consonantes.length; a++){
+                if (entrada.charAt(i) == consonantes[a]){
+                    n_cons++;
+                    cons+=entrada.charAt(i);
+                }
+            }
+            for (int a=0; a<signos.length; a++){
+                if (entrada.charAt(i) == signos[a]) {
+                    n_sign++;
+                    sign += entrada.charAt(i);
+                }
+
+            }
+        }
+    }
+
+    public void cadenaInvertida(){
+        String cadena = txtinfostring.getText().toString().trim();
+
+        StringBuilder stringBuilder = new StringBuilder(cadena);
+        invertida = stringBuilder.reverse().toString();
+    }
+
+    public String cadenaInvertidaGenerico(String cadenaOriginal){
+
+        StringBuilder stringBuilder = new StringBuilder(cadenaOriginal);
+
+        return stringBuilder.reverse().toString();
     }
 
     public View.OnClickListener OnClickbtnBorrar = new View.OnClickListener() {
@@ -100,7 +167,11 @@ public class MainActivity extends AppCompatActivity {
             lblcadenaingresada.setText("");
             lblcantidadpalabras.setText("");
             lblcantidadcaracteres.setText("");
-            lblcantidadnumeros.setText("");
+            lblCantidadVocales.setText("");
+            lblCantidadConsonantes.setText("");
+            lblCantidadSignos.setText("");
+            lblCadenaInvertida.setText("");
+
         }
     };
 
